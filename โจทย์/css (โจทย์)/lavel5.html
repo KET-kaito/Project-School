@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมฝึกเขียนโค้ด - ด่านที่ 5</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark-green: #0a400a;
+            --bg-panel-green: #3ea924;
+            --bg-dark2-green: #42ac18; /* เพิ่มสีใหม่ตามที่คุณระบุ */
+            --bg-box-white: #ffffff;
+            --bg-pond-blue: #1e528a;
+            --white: #ffffff;
+            --text-dark: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark-green);
+            color: var(--white);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ---------- แถบด้านบนสุด ---------- */
+        header {
+            background-color: var(--bg-panel-green);
+            text-align: center;
+            padding: 12px 0;
+            font-size: 32px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* ---------- พื้นที่ส่วนกลางทั้งหมด ---------- */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1750px;
+            margin: 0 auto;
+            padding: 25px 0;
+            gap: 20px;
+        }
+
+        /* ---------- สระน้ำ (Pond) ---------- */
+        .pond-container {
+            flex: 1;
+            background-color: var(--bg-pond-blue);
+            border: 12px solid var(--white);
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+
+        /* สร้าง Layer เพื่อแยกชั้นกบ กับ ชั้นใบบัว */
+        .layer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            align-items: flex-start; 
+            padding: 40px 50px; 
+            width: 100%;
+            height: 100%;
+        }
+
+        .pad-layer {
+            z-index: 1;
+            align-items: flex-end; 
+            justify-content: center; 
+            gap: 40px; 
+        }
+
+        .frog-layer {
+            z-index: 10;
+            justify-content: center; 
+            gap: 40px;
+        }
+
+        .frog-img {
+            width: 160px;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.4));
+            transition: all 0.3s ease;
+            animation: breathe 2s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.05) translateY(-4px); }
+        }
+
+        .frog-img.success {
+            animation: jump 0.5s infinite alternate ease-in-out;
+        }
+
+        @keyframes jump {
+            0% { transform: translateY(0) scale(1.05); }
+            100% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        .lilypad-img {
+            width: 200px;
+            opacity: 0.85;
+            mix-blend-mode: multiply;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+        }
+
+        /* ---------- พื้นที่เนื้อหาด้านล่าง ---------- */
+        .bottom-section {
+            display: flex;
+            gap: 25px;
+            height: 340px;
+        }
+
+        .instruction-box {
+            flex: 1.15;
+            background-color: var(--bg-panel-green);
+            border-radius: 25px;
+            padding: 25px 40px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .instruction-box h1 {
+            font-size: 35px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .instruction-box h2 {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 7px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-highlight {
+            background-color: rgba(255, 255, 255, 0.4);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .line {
+            width: 67%;
+            height: 3px;
+            background: rgb(243, 243, 243);
+            margin-bottom: 22px;
+        }
+
+        .list-items {
+            list-style-type: disc;
+            padding-left: 25px;
+            font-size: 17px;
+            line-height: 1.8;
+            color: #e8f5e9;
+        }
+
+        .list-items li::marker {
+            color: white;
+        }
+
+        .list-items code {
+            background-color: rgba(0, 0, 0, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .editor-box {
+            flex: 1;
+            background-color: var(--bg-panel-green);
+            border-radius: 25px;
+            padding: 20px;
+            display: flex;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .editor-inner {
+            width: 100%;
+            background-color: #d8d8d8;
+            border-radius: 15px;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            width: 50px;
+            background-color: #909090;
+            color: #fdfdfd;
+            text-align: center;
+            padding-top: 20px;
+            font-size: 1.2rem;
+            line-height: 1.9;
+            user-select: none;
+        }
+
+        .code-content {
+            flex: 1;
+            padding: 20px 30px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 19px;
+            line-height: 1.9;
+            color: var(--text-dark);
+        }
+
+        .indent {
+            margin-left: 25px;
+        }
+
+        .input-box {
+            background-color: var(--white);
+            display: inline-block;
+            width: 75%;
+            padding: 5px;
+            border-radius: 2px;
+            border: none;
+            outline: none;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 19px;
+            color: var(--text-dark);
+        }
+
+        /* ---------- แถบปุ่มด้านล่างสุด ---------- */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            background-color: var(--bg-panel-green);
+            color: var(--white);
+            border: none;
+            padding: 15px 60px;
+            border-radius: 18px;
+            font-size: 26px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #48c038;
+        }
+
+        .action-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn.disabled {
+            background-color: #666;
+            color: #aaa;
+            pointer-events: none;
+            box-shadow: none;
+            text-decoration: none;
+        }
+
+        .btn.pulse {
+            background-color: #48c038;
+            animation: pulse-green 1.5s infinite;
+            text-decoration: none;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(72, 192, 56, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(72, 192, 56, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(72, 192, 56, 0); }
+        }
+
+        /* ---------- Popup เลือกด่าน ---------- */
+        .level-popup {
+            position: absolute;
+            bottom: 80px;
+            /* ให้ลอยอยู่เหนือปุ่ม */
+            left: 0;
+            background-color: var(--bg-dark2-green);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            width: 350px;
+            z-index: 100;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+
+            /* เอฟเฟกต์ซ่อน/แสดง */
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        }
+
+        /* คลาสสำหรับสั่งให้ Popup แสดงขึ้นมา */
+        .level-popup.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--white);
+            margin-top: 15px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .category-title:first-child {
+            margin-top: 0;
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            /* 5 คอลัมน์ */
+            gap: 10px;
+        }
+
+        .lvl-btn {
+            background-color: #2b7a18;
+            color: white;
+            text-decoration: none;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 500;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .lvl-btn:hover {
+            background-color: #48c038;
+            transform: scale(1.05);
+        }
+
+        /* สีสำหรับด่านที่ผ่านแล้ว */
+        .lvl-btn.completed {
+            background-color: #48c038;
+            border: 2px solid #fff;
+        }
+
+        /* สีสำหรับด่านปัจจุบัน */
+        .lvl-btn.current {
+            background-color: #ffffff;
+            color: var(--bg-dark-green);
+            font-weight: bold;
+            pointer-events: none;
+            /* กดซ้ำไม่ได้ */
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        การจัดเรียงแนวตั้งด้วยคำสั่ง align-items
+    </header>
+
+    <main class="main-container">
+        
+        <div class="pond-container" id="pond">
+            <div class="layer pad-layer">
+                <img src="/195427243_4b32e0fe-95b1-4978-84d4-563d73f1146d.png" alt="" class="lilypad-img"> 
+                <img src="/195427243_4b32e0fe-95b1-4978-84d4-563d73f1146d.png" alt="" class="lilypad-img"> 
+                <img src="/195427243_4b32e0fe-95b1-4978-84d4-563d73f1146d.png" alt="" class="lilypad-img">
+            </div>
+
+            <div class="layer frog-layer" id="frog-layer">
+                <img src="/image-Photoroom (3).png" alt="[Image of กบ]" class="frog-img">
+                <img src="/image-Photoroom (3).png" alt="" class="frog-img">
+                <img src="/image-Photoroom (3).png" alt="" class="frog-img">
+            </div>
+        </div>
+
+        <div class="bottom-section">
+
+            <div class="instruction-box">
+                <h1>โจทย์</h1>
+                <h2>
+                    ช่วยพากบทั้งหลายไปสู่ด้านล่างของสระน้ำโดยใช้ <span class="code-highlight">align-items</span>
+                </h2>
+                <div class="line"></div>
+
+                <ul class="list-items">
+                    <li><code>flex-start</code>: เรียง items ไปไว้ด้านบนของ container</li>
+                    <li><code>flex-end</code>: เรียง items ไปไว้ด้านล่างของ container</li>
+                    <li><code>center</code>: เรียง items ไปไว้ตรงกลางในแนวตั้งของ container</li>
+                    <li><code>baseline</code>: แสดง items ที่แนวบรรทัดของ container</li>
+                    <li><code>stretch</code>: items จะถูกดึงให้พอดีกับ container</li>
+                </ul>
+            </div>
+
+            <div class="editor-box">
+                <div class="editor-inner">
+
+                    <div class="line-numbers">
+                        1<br>2<br>3<br>4<br>5<br>6<br>7
+                    </div>
+
+                    <div class="code-content">
+                        <div>#pond {</div>
+                        <div class="indent">display: flex;</div>
+
+                        <div class="indent">
+                            <input type="text" id="css-input" class="input-box" placeholder="" autocomplete="off" spellcheck="false">
+                        </div>
+
+                        <div>}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- แถบปุ่ม -->
+        <div class="action-bar">
+            <div class="action-left" style="position: relative;">
+                <!--ปุ่มสำหรับกดเปิด/ปิดเมนู -->
+                <button class="btn" id="toggle-menu-btn" onclick="toggleLevelMenu()">เลเวลที่ 5 ▴</button>
+
+                <!--กล่อง Popup เลือกด่าน -->
+                <div class="level-popup" id="level-popup">
+                    <!-- หมวด HTML -->
+                    <div class="category-title">HTML (10 ด่าน)</div>
+                    <div class="level-grid">
+                        <a href="/html/index.html" class="lvl-btn completed">1</a>
+                        <a href="/html/lavel2.html" class="lvl-btn completed">2</a>
+                        <a href="/html/lavel3.html" class="lvl-btn completed">3</a>
+                        <a href="/html/lavel4.html" class="lvl-btn completed">4</a>
+                        <a href="/html/lavel5.html" class="lvl-btn current">5</a>
+                    </div>
+
+                    <!-- หมวด CSS -->
+                    <div class="category-title">CSS (10 ด่าน)</div>
+                    <div class="level-grid">
+                        <a href="/html/lavel6.html" class="lvl-btn">6</a>
+                        <a href="/html/lavel7.html" class="lvl-btn">7</a>
+                        <a href="/html/lavel8.html" class="lvl-btn">8</a>
+                        <a href="/html/lavel9.html" class="lvl-btn">9</a>
+                        <a href="/html/lavel10.html" class="lvl-btn">10</a>
+                    </div>
+
+                    <!-- หมวด JS -->
+                    <div class="category-title">JS (5 ด่าน)</div>
+                    <div class="level-grid">
+                        <a href="/html/lavel11.html" class="lvl-btn">11</a>
+                        <a href="/html/lavel12.html" class="lvl-btn">12</a>
+                        <a href="/html/lavel13.html" class="lvl-btn">13</a>
+                        <a href="/html/lavel14.html" class="lvl-btn">14</a>
+                        <a href="/html/lavel15.html" class="lvl-btn">15</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-right">
+                <button class="btn" onclick="showAnswer()">เฉลย</button>
+                <a href="/html/level6.html" class="btn disabled" id="next-btn">ถัดไป</a>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const cssInput = document.getElementById("css-input");
+        const frogLayer = document.getElementById("frog-layer");
+        const frogs = document.querySelectorAll(".frog-img");
+        const nextBtn = document.getElementById("next-btn");
+
+        window.onload = () => {
+            cssInput.focus();
+        };
+
+        function checkAnswer() {
+            const inputCode = cssInput.value;
+
+            try {
+                // ขยับกบตามโค้ดที่พิมพ์ โดยคงค่าแนวนอน (justify-content) ไว้เหมือนเดิม
+                frogLayer.style.cssText = `justify-content: center; gap: 40px; align-items: flex-start; ${inputCode}`;
+            } catch (e) { }
+
+            // ตรวจหาคำตอบที่ถูกต้อง (ใช้ align-items: flex-end)
+            const cleanInput = inputCode.replace(/\s/g, '').toLowerCase();
+            const isCorrect = cleanInput.includes('align-items:flex-end');
+
+            if (isCorrect) {
+                // ตอบถูก
+                nextBtn.classList.remove('disabled');
+                nextBtn.classList.add('pulse');
+                frogs.forEach(f => f.classList.add('success'));
+            } else {
+                // ตอบผิด
+                nextBtn.classList.add('disabled');
+                nextBtn.classList.remove('pulse');
+                frogs.forEach(f => f.classList.remove('success'));
+            }
+        }
+
+        cssInput.addEventListener('input', checkAnswer);
+
+        function showAnswer() {
+            // คำตอบที่ถูกต้องคือ align-items: flex-end;
+            const answer = "align-items: flex-end;";
+            let i = 0;
+            
+            cssInput.value = ""; 
+            cssInput.disabled = true; 
+            
+            const typing = setInterval(() => {
+                cssInput.value += answer[i];
+                checkAnswer(); 
+                i++;
+                
+                if (i >= answer.length) {
+                    clearInterval(typing);
+                    cssInput.disabled = false; 
+                    cssInput.focus();
+                }
+            }, 80); 
+        }
+
+        // ฟังก์ชันสำหรับเปิด/ปิด Popupเลือกด่าน
+        function toggleLevelMenu() {
+            const popup = document.getElementById("level-popup");
+            popup.classList.toggle("show");
+        }
+
+        // ระบบปิด Popup อัตโนมัติ เมื่อคลิกพื้นที่ว่างรอบๆ
+        document.addEventListener('click', function(event) {
+            const popup = document.getElementById("level-popup");
+            const btn = document.getElementById("toggle-menu-btn");
+            
+            // ถ้า popup แสดงอยู่ และจุดที่คลิกไม่ได้อยู่ข้างใน popup หรือปุ่มเปิด ให้ปิดมันซะ
+            if (popup && popup.classList.contains("show")) {
+                if (!popup.contains(event.target) && event.target !== btn) {
+                    popup.classList.remove("show");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
