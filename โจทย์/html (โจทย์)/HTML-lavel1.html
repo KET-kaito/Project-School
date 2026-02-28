@@ -8,392 +8,24 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-dark-green: #0a400a;
-            --bg-panel-green: #3ea924;
-            --bg-dark2-green: #42ac18;
-            --white: #ffffff;
-            --text-dark: #333333;
-            
-            /* สีสำหรับ Form Preview */
-            --form-bg-blue: #23518c;
-            --form-bg-yellow: #dbab16;
-        }
+    <link rel="stylesheet" href="/css/css (โจทย์ html)/lavel1.css">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Kanit', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark-green);
-            color: var(--white);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        /* ---------- แถบด้านบนสุด ---------- */
-        header {
-            background-color: var(--bg-panel-green);
-            text-align: center;
-            padding: 12px 0;
-            font-size: 32px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        /* ---------- พื้นที่ส่วนกลางทั้งหมด ---------- */
-        .main-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 1750px;
-            margin: 0 auto;
-            padding: 25px 0;
-            gap: 20px;
-        }
-
-        /* ---------- หน้าต่างจำลองผลลัพธ์ HTML (Preview Area) ---------- */
-        .preview-container {
-            flex: 1;
-            background-color: var(--form-bg-blue);
-            border: 12px solid var(--white);
-            border-radius: 40px;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.25);
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-        }
-
-        /* แถบสีเหลืองตรงกลาง */
-        .form-wrapper {
-            background-color: var(--form-bg-yellow);
-            width: 65%;
-            height: 100%;
-            padding: 30px 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-
-        .form-title {
-            text-align: center;
-            font-size: 48px;
-            font-weight: 700;
-            color: var(--white);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            font-size: 24px;
-            color: var(--text-dark);
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        /* ช่อง input คงที่ (จำลอง) */
-        .form-input-static {
-            width: 100%;
-            height: 45px;
-            background-color: var(--white);
-            border: none;
-            border-radius: 4px;
-            margin-bottom: 25px;
-        }
-
-        /* ปุ่มกดคงที่ (จำลอง) */
-        .static-btn {
-            background-color: var(--form-bg-blue);
-            color: var(--white);
-            font-size: 26px;
-            font-weight: 600;
-            padding: 10px 30px;
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            font-family: 'Kanit', sans-serif;
-            margin-top: 10px;
-            display: inline-block;
-        }
-
-        /* พื้นที่สำหรับ Render โค้ดที่ผู้ใช้พิมพ์ */
-        #user-render-area {
-            min-height: 45px; 
-            margin-bottom: 25px;
-        }
-
-        /* CSS บังคับให้ช่องกรอกข้อความที่ผู้ใช้สร้างหน้าตาเข้ากับฟอร์ม */
-        #user-render-area input[type="text"] {
-            width: 100%;
-            height: 45px;
-            background-color: var(--white);
-            border: none;
-            border-radius: 4px;
-            padding: 0 15px;
-            font-size: 18px;
-            font-family: 'Kanit', sans-serif;
-            color: var(--text-dark);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        #user-render-area input[type="text"]:focus {
-            outline: 2px solid var(--form-bg-blue);
-        }
-
-
-        /* ---------- พื้นที่เนื้อหาด้านล่าง ---------- */
-        .bottom-section {
-            display: flex;
-            gap: 25px;
-            height: 340px;
-        }
-
-        .instruction-box {
-            flex: 1.15;
-            background-color: var(--bg-panel-green);
-            border-radius: 25px;
-            padding: 25px 40px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            overflow-y: auto;
-        }
-
-        .instruction-box h1 {
-            font-size: 35px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .instruction-box h2 {
-            font-size: 22px;
-            font-weight: 400;
-            margin-bottom: 7px;
-            line-height: 1.5;
-        }
-
-        .code-highlight {
-            background-color: rgba(255, 255, 255, 0.4);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            color: var(--white);
-        }
-
-        .line {
-            width: 100%;
-            height: 3px;
-            background: rgb(243, 243, 243);
-            margin-bottom: 15px;
-            margin-top: 5px;
-        }
-
-        .list-items {
-            list-style-type: none;
-            font-size: 17px;
-            line-height: 1.8;
-            color: #e8f5e9;
-        }
-
-        .list-items li {
-            margin-bottom: 5px;
-        }
-
-        .list-items code {
-            background-color: rgba(0, 0, 0, 0.15);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            color: var(--white);
-            margin-right: 5px;
-        }
-
-        .editor-box {
-            flex: 1;
-            background-color: var(--bg-panel-green);
-            border-radius: 25px;
-            padding: 20px;
-            display: flex;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .editor-inner {
-            width: 100%;
-            background-color: #d8d8d8;
-            border-radius: 15px;
-            display: flex;
-            overflow: hidden;
-        }
-
-        .line-numbers {
-            width: 50px;
-            background-color: #909090;
-            color: #fdfdfd;
-            text-align: center;
-            padding-top: 20px;
-            font-size: 1.2rem;
-            line-height: 1.7; 
-            user-select: none;
-        }
-
-        .code-content {
-            flex: 1;
-            padding: 20px 30px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 18px;
-            line-height: 1.7;
-            color: var(--text-dark);
-        }
-
-        .indent {
-            margin-left: 25px;
-        }
-
-        .input-box {
-            background-color: var(--white);
-            display: inline-block;
-            width: 95%;
-            padding: 2px 10px;
-            border-radius: 2px;
-            border: none;
-            outline: none;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 18px;
-            color: var(--text-dark);
-        }
-
-        /* ---------- แถบปุ่มด้านล่างสุด ---------- */
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn {
-            background-color: var(--bg-panel-green);
-            color: var(--white);
-            border: none;
-            padding: 15px 60px;
-            border-radius: 18px;
-            font-size: 26px;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            transition: 0.2s;
-        }
-
-        .btn:hover {
-            background-color: #48c038;
-        }
-
-        .action-right {
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn.disabled {
-            background-color: #666;
-            color: #aaa;
-            pointer-events: none;
-            box-shadow: none;
-            text-decoration: none;
-        }
-
-        .btn.pulse {
-            background-color: #48c038;
-            animation: pulse-green 1.5s infinite;
-            text-decoration: none;
-        }
-
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(72, 192, 56, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(72, 192, 56, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(72, 192, 56, 0); }
-        }
-
-        /* ---------- Popup เลือกด่าน ---------- */
-        .level-popup {
-            position: absolute;
-            bottom: 80px;
-            left: 0;
-            background-color: var(--bg-dark2-green);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            width: 350px;
-            z-index: 100;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            visibility: hidden;
-            opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
-        }
-
-        .level-popup.show {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .category-title {
-            font-size: 18px;
-            font-weight: 500;
-            color: var(--white);
-            margin-top: 15px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            padding-bottom: 5px;
-        }
-
-        .category-title:first-child { margin-top: 0; }
-        .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-
-        .lvl-btn {
-            background-color: #2b7a18;
-            color: white;
-            text-decoration: none;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: 500;
-            transition: 0.2s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .lvl-btn:hover { background-color: #48c038; transform: scale(1.05); }
-        .lvl-btn.completed { background-color: #48c038; border: 2px solid #fff; }
-        .lvl-btn.current { background-color: #ffffff; color: var(--bg-dark-green); font-weight: bold; pointer-events: none; }
-    </style>
 </head>
 
 <body>
 
     <header>
-        การเรียนรู้ HTML Input Types
+        ข้อที่ 1 : การเรียนรู้ HTML Input Types
     </header>
 
     <main class="main-container">
-        
+
         <!-- หน้าต่างพรีวิวผลลัพธ์แบบฟอร์ม -->
         <div class="preview-container">
             <!-- แถบสีเหลืองตรงกลาง -->
             <div class="form-wrapper">
                 <div class="form-title">แบบฟอร์ม</div>
-                
+
                 <div class="form-label">ชื่อ - นามสกุล</div>
                 <!-- พื้นที่ที่โค้ดของผู้ใช้จะถูกดึงมาแสดงผล (Render) แบบ Real-time -->
                 <div id="user-render-area"></div>
@@ -412,9 +44,10 @@
             <div class="instruction-box">
                 <h1>โจทย์</h1>
                 <h2>
-                    สร้างช่องสำหรับกรอกข้อความ เพื่อรับข้อมูลชื่อ-นามสกุล โดยใช้แท็ก <span class="code-highlight">&lt;input&gt;</span> และกำหนดประเภทเป็น <strong>"text"</strong>
+                    สร้างช่องสำหรับกรอกข้อความ เพื่อรับข้อมูลชื่อ-นามสกุล โดยใช้แท็ก <span
+                        class="code-highlight">&lt;input&gt;</span> และกำหนดประเภทเป็น <strong>"text"</strong>
                 </h2>
-                <div class="line"></div>
+                <div class="line" style="margin-bottom: 10px;"></div>
 
                 <ul class="list-items">
                     <li><code>type="text"</code> สร้างช่องกรอกข้อความทั่วไป</li>
@@ -428,21 +61,22 @@
                 <div class="editor-inner">
 
                     <div class="line-numbers">
-                        1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9
+                        1<br>2<br>3<br>4<br>5<br>6<br>7
                     </div>
 
                     <div class="code-content">
                         <div>&lt;form&gt;</div>
                         <div class="indent">&lt;label&gt;ชื่อ - นามสกุล&lt;/label&gt;</div>
-                        
+                        <div style="color: #5c6370; font-style: italic; margin-left: 22px;">// ตัวอย่างการพิมพ์ input
+                            type="text" //</div>
+
+
                         <div class="indent" style="margin-top: 5px; margin-bottom: 5px;">
                             <!-- ช่องรับคำสั่ง HTML -->
-                            <input type="text" id="html-input" class="input-box" placeholder="<!-- พิมพ์โค้ดที่นี่ -->" autocomplete="off" spellcheck="false">
+                            <input type="text" id="html-input" class="input-box" placeholder="พิมพ์โค้ดที่นี่..."
+                                autocomplete="off" spellcheck="false">
                         </div>
-                        
-                        <div class="indent">&lt;label&gt;เบอร์โทรศัพท์&lt;/label&gt;</div>
-                        <div class="indent">&lt;input type="text"&gt;</div>
-                        <div class="indent">&lt;input type="button" value="ส่งคำตอบ"&gt;</div>
+
                         <div>&lt;/form&gt;</div>
                     </div>
                 </div>
@@ -453,126 +87,69 @@
         <!-- แถบปุ่ม -->
         <div class="action-bar">
             <div class="action-left" style="position: relative;">
-                <button class="btn" id="toggle-menu-btn" onclick="toggleLevelMenu()">HTML เลเวล 2 ▴</button>
+                <!-- ปุ่มสำหรับกดเปิด/ปิดเมนู -->
+                <button class="btn" id="toggle-menu-btn" onclick="toggleLevelMenu()">HTML ด่านที่ 1 ▴</button>
 
-                <!--กล่อง Popup เลือกด่าน -->
+                <!-- กล่อง Popup เลือกด่าน -->
                 <div class="level-popup" id="level-popup">
+
                     <!-- หมวด HTML -->
-                    <div class="category-title">HTML (10 ด่าน)</div>
+                    <div class="category-title">HTML (7 ด่าน)</div>
                     <div class="level-grid">
-                        <a href="/html/level1.html" class="lvl-btn completed">1</a>
-                        <a href="/html/level2.html" class="lvl-btn current">2</a>
-                        <a href="/html/level3.html" class="lvl-btn">3</a>
-                        <a href="/html/level4.html" class="lvl-btn">4</a>
-                        <a href="/html/level5.html" class="lvl-btn">5</a>
-                        <a href="/html/level6.html" class="lvl-btn">6</a>
-                        <a href="/html/level7.html" class="lvl-btn">7</a>
-                        <a href="/html/level8.html" class="lvl-btn">8</a>
-                        <a href="/html/level9.html" class="lvl-btn">9</a>
-                        <a href="/html/level10.html" class="lvl-btn">10</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel1.html" class="lvl-btn current">1</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel2.html" class="lvl-btn ">2</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel3.html" class="lvl-btn">3</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel4.html" class="lvl-btn">4</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel5.html" class="lvl-btn">5</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel6.html" class="lvl-btn">6</a>
+                        <a href="/โจทย์/html (โจทย์)/HTML-lavel7.html" class="lvl-btn">7</a>
                     </div>
 
                     <!-- หมวด CSS -->
-                    <div class="category-title">CSS (10 ด่าน)</div>
+                    <div class="category-title">CSS (7 ด่าน)</div>
                     <div class="level-grid">
-                        <a href="/css/level1.html" class="lvl-btn">1</a>
-                        <a href="/css/level2.html" class="lvl-btn">2</a>
-                        <a href="/css/level3.html" class="lvl-btn">3</a>
-                        <a href="/css/level4.html" class="lvl-btn">4</a>
-                        <a href="/css/level5.html" class="lvl-btn">5</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel1.html" class="lvl-btn">1</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel2.html" class="lvl-btn">2</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel3.html" class="lvl-btn">3</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel4.html" class="lvl-btn">4</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel5.html" class="lvl-btn">5</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel6.html" class="lvl-btn">6</a>
+                        <a href="/โจทย์/css (โจทย์)/lavel7.html" class="lvl-btn">7</a>
                     </div>
+
+                    <!-- หมวด JS -->
+                    <div class="category-title">JS (5 ด่าน)</div>
+                    <div class="level-grid">
+                        <a href="/โจทย์/javascript (โจทย์)/JS-lavel1.html" class="lvl-btn">1</a>
+                        <a href="/โจทย์/javascript (โจทย์)/JS-lavel2.html" class="lvl-btn">2</a>
+                        <a href="/โจทย์/javascript (โจทย์)/JS-lavel3.html" class="lvl-btn">3</a>
+                        <a href="/โจทย์/javascript (โจทย์)/JS-lavel4.html" class="lvl-btn">4</a>
+                        <a href="/โจทย์/javascript (โจทย์)/JS-lavel5.html" class="lvl-btn">5</a>
+                    </div>
+
                 </div>
             </div>
 
+
             <div class="action-right">
-                <button class="btn" onclick="showAnswer()">เฉลย</button>
-                <a href="/html/level3.html" class="btn disabled" id="next-btn">ถัดไป</a>
+
+                <a href="#" class="btn" onclick="showAnswer()">เฉลย</a>
+
+                <div id="overlay" onclick="hideAnswer()">
+                    <img src="/мем.png" class="popup-img">
+                </div>
+
+                <!-- ใส่ class disabled ไว้ตั้งแต่เริ่มต้น -->
+                <a href="/โจทย์/html (โจทย์)/HTML-lavel2.html" class="btn disabled" id="next-btn">ถัดไป</a>
+
             </div>
         </div>
 
+
     </main>
 
-    <script>
-        const htmlInput = document.getElementById("html-input");
-        const renderArea = document.getElementById("user-render-area");
-        const nextBtn = document.getElementById("next-btn");
+    <script src="/javascript/js (html)/lavel-1.js"></script>
 
-        window.onload = () => {
-            htmlInput.focus();
-        };
-
-        function checkAnswer() {
-            const inputCode = htmlInput.value;
-
-            // 1. นำโค้ด HTML ที่ผู้ใช้พิมพ์ ไปแสดงผล
-            renderArea.innerHTML = inputCode;
-
-            // 2. ตรวจสอบความถูกต้อง (DOM Checking & String Parsing)
-            let isCorrect = false;
-            
-            // เช็คว่ามี tag <input> เกิดขึ้นจริงบนจอ
-            const generatedInput = renderArea.querySelector("input");
-            
-            // ตัดช่องว่างต่างๆ ออกเพื่อเช็คข้อความดิบๆ เผื่อผู้ใช้พิมพ์สลับตำแหน่ง 
-            const cleanInput = inputCode.replace(/\s/g, '').toLowerCase();
-            
-            // ตรวจว่ามีการสร้าง <input> และผู้ใช้ตั้งใจพิมพ์ type="text" จริงๆ 
-            // (ป้องกันกรณีพิมพ์แค่ <input> เปล่าๆ แล้วเบราว์เซอร์มองว่าเป็น text อัตโนมัติ)
-            if (generatedInput && (cleanInput.includes('type="text"') || cleanInput.includes("type='text'"))) {
-                isCorrect = true;
-            }
-
-            if (isCorrect) {
-                // ตอบถูก
-                nextBtn.classList.remove('disabled');
-                nextBtn.classList.add('pulse');
-            } else {
-                // ตอบผิด
-                nextBtn.classList.add('disabled');
-                nextBtn.classList.remove('pulse');
-            }
-        }
-
-        htmlInput.addEventListener('input', checkAnswer);
-
-        function showAnswer() {
-            // โค้ด HTML ที่ถูกต้อง
-            const answer = '<input type="text">';
-            let i = 0;
-            
-            htmlInput.value = ""; 
-            htmlInput.disabled = true; 
-            
-            const typing = setInterval(() => {
-                htmlInput.value += answer[i];
-                checkAnswer(); 
-                i++;
-                
-                if (i >= answer.length) {
-                    clearInterval(typing);
-                    htmlInput.disabled = false; 
-                    htmlInput.focus();
-                }
-            }, 60); 
-        }
-
-        // ระบบ Popup Menu
-        function toggleLevelMenu() {
-            const popup = document.getElementById("level-popup");
-            popup.classList.toggle("show");
-        }
-
-        document.addEventListener('click', function(event) {
-            const popup = document.getElementById("level-popup");
-            const btn = document.getElementById("toggle-menu-btn");
-            
-            if (popup && popup.classList.contains("show")) {
-                if (!popup.contains(event.target) && event.target !== btn) {
-                    popup.classList.remove("show");
-                }
-            }
-        });
-    </script>
 </body>
 
 </html>
