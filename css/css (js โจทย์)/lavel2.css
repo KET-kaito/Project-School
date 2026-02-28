@@ -46,7 +46,7 @@ header {
 
 .preview-container {
     flex: 1;
-    background-color: #2b2b2b;
+    background-color: var(--form-bg-blue);
     border: 12px solid var(--white);
     border-radius: 40px;
     position: relative;
@@ -76,8 +76,6 @@ header {
     font-family: monospace;
     margin-bottom: 20px;
 }
-
-
 
 .action-btn {
     background-color: #2196f3;
